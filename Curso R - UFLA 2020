@@ -1,0 +1,1381 @@
+# Curso R UFLA 
+
+## Dia 1
+#Citando o R
+```{r}
+citation() 
+```
+
+#INSTALANDO PACOTES
+```{r}
+install.packages("ExpDes.pt")
+```
+
+#CARREGANDO PACOTES
+```{r}
+library("ExpDes.pt")
+```
+
+#Citando pacotes do R
+```{r}
+citation("ExpDes.pt")
+```
+
+#OPERAÇÕES MATEMATICAS
+```{r}
+2+2
+3-1
+2*3 
+4/2
+2^2
+sqrt(100)
+sin(45)
+cos(45)
+tan(45)
+4<7	  
+2<=3 	
+5>2	  
+4>=3	
+2==3	
+6!=7	
+```
+
+##-------------------------- CRIANDO OBJETOS -------------------------##
+#CRIANDO OBJETOS
+```{r}
+a<-7 
+a 
+b<-5
+a+b 
+c<-a+b  
+c
+a
+a<-19
+a
+a<-7
+a2<-19
+a
+a2
+ls()
+rm(a2)
+ls()
+rm(list=ls())
+```
+
+##---------------------- ENTRANDO COM DADOS NO R ----------------------##
+
+#1 - ENTRANDO COM DADOS DIRETAMENTE NO R
+```{r}
+a<-c(10, 20, 30, 40, 50, 60) #criando Vetor A
+a
+b <-c(2, 4, 6, 10, 8, 12) #Criando Vetor B
+b
+```
+
+#OPERAÇÕES BÁSICAS
+```{r}
+a+b
+a*b
+a/b
+sum(a)
+sum(a+b)
+length(a+b)
+media<-sum(a+b)/length(a+b)
+media
+mean(a+b) 
+```
+
+#MANIPULAÇÕES
+
+#nomeando
+```{r}
+names(b)<-c("A","B","C","D", "E", "F") 
+b
+names(a)<-c("A","B","C","D", "E", "F")
+a
+a["A"]+b["E"]
+```
+
+#ordenando          
+```{r}
+order(b, na.last = TRUE, decreasing = TRUE)
+novob<-b[(order(b, na.last = TRUE, decreasing = TRUE))]
+novob
+```
+
+#Recortando, removendo, adicionando e substituindo valores
+```{r}
+b2<-b[1:3];b2  
+b3<-b[-5]; b3  
+b[6]<-100; b
+mean(a); a
+a2<-a[a>mean(a)]; a2 #Somente valores acima da média
+mean(a2) #nova média
+```
+
+#Criando um novo dataframe
+```{r}
+ab<-data.frame(a,b); ab 
+```
+
+```{r}
+names(ab)<-c("Amb1", "Amb2");ab 
+```
+
+```{r}
+ab$Amb1 #Observar somente o Ambiente 1
+```
+
+```{r}
+mean(ab$Amb1)
+var(ab$Amb1) 
+```
+
+```{r}
+length(ab[1,])
+print(ab[1,])
+```
+
+```{r}
+length(ab[,2])
+print(ab[,2])
+```
+
+```{r}
+sum(ab[1,]) 
+sum(ab[,"Amb2"])
+```
+
+```{r}
+ab
+```
+
+#FUNÇÃO APPLY
+#apply(X, MARGIN, FUN, ...) X=objeto, Margin = Lin ou Col? FUN = função
+```{r}
+apply(ab,1,mean) #média de todos os genotipos (1 para linhas)
+apply(ab,2,mean) #média de todos os ambientes (2 para colunas)
+```
+
+#Um novo ambiente
+```{r}
+ab$Amb3<- c(30, 60, 90, 100, 120, 760); ab
+mean(ab$Amb3)
+```
+
+#Conectando comandos
+```{r}
+ab[ab$Amb1 > mean(ab$Amb1)
+   & ab$Amb2 > mean(ab$Amb2)
+   & ab$Amb3 > mean(ab$Amb3), ]
+```
+
+```{r}
+ab2<-ab[order(ab$Amb2, decreasing = TRUE), ]; ab2
+```
+
+ 
+#2- IMPORTANDO PANILHAS DE DADOS
+
+#Definindo diretorio
+```{r}
+setwd("C:\\Users\\Usuario\\Desktop\\CURSO R GEN 2020") #Ou Crtl+Shift+H
+dir()
+```
+
+#Importando .TXT
+```{r}
+exemplo1<-read.table("https://raw.githubusercontent.com/VSSEric/Introduction-to-R-UFLA-2019/master/Exemplos/exemplo1.txt", h=T)
+```
+
+```{r}
+head(exemplo1)
+tail(exemplo1)
+```
+
+```{r}
+str(exemplo1)
+```
+
+#Nomeando as linhas
+```{r}
+rownames(exemplo1)<-c(LETTERS[1:20])
+colnames(exemplo1)<-c("Lavras", "Ijaci", "Itutinga")
+head(exemplo1)
+```
+
+#Manipulação
+```{r}
+exemplo1$Lavras
+exemplo1$Ijaci
+exemplo1$Itutinga
+attach(exemplo1)
+mean(Lavras)
+mean(Ijaci)
+mean(Itutinga)
+detach(exemplo1)
+apply(exemplo1,1,mean) #média de todos os genotipos
+apply(exemplo1,2,mean) #média de todos os ambientes
+```
+
+```{r}
+exemplo1[exemplo1$Lavras > mean(exemplo1$Lavras)
+   & exemplo1$Ijaci > mean(exemplo1$Ijaci)
+   & exemplo1$Itutinga > mean(exemplo1$Itutinga), ]
+```
+
+```{r}
+ex12<-exemplo1[order(exemplo1$Ijaci, decreasing = TRUE), ]; ex12
+```
+
+#ESTATÍSTICA DESCRITIVA BÁSICA
+```{r}
+summary(exemplo1)
+var(exemplo1)
+apply(exemplo1,2,var)
+apply(exemplo1,2,summary)
+apply(exemplo1,1, summary) 
+apply(exemplo1,1,var)
+```
+
+#Instalando pacotes
+```{r}
+# install.packages("agricolae")
+# install.packages("laercio")
+# install.packages("ggplot2")
+library("agricolae")
+library("laercio")
+library("ggplot2")
+```
+
+#Importando dados de pacotes
+```{r}
+data(sweetpotato) #agricolae
+data(cotton) #agricolae
+dados<-(ldata) #laercio
+```
+
+```{r}
+head(sweetpotato)
+summary(sweetpotato)
+str(sweetpotato)
+```
+
+```{r}
+head(dados)
+summary(dados)
+str(dados)
+```
+
+```{r}
+head(cotton)
+summary(cotton)
+str(cotton)
+```
+
+```{r}
+boxplot(sweetpotato)
+ggplot(sweetpotato) + 
+  geom_boxplot(aes(x = virus, y = yield))
+```
+
+```{r}
+boxplot(dados)
+dados<-transform(dados, trat=factor(trat))
+ggplot(dados) + 
+  geom_boxplot(aes(x = trat, y = resp))
+```
+
+```{r}
+boxplot(cotton)
+library("ggplot2")
+ggplot(cotton) + 
+  geom_boxplot(aes(x = site, y = yield))
+```
+
+#Identificando Outliers
+```{r}
+cottonLima <- cotton[cotton$site == "Lima",]
+boxplot(cottonLima)
+boxplot.stats(cottonLima$yield)
+```
+
+```{r}
+#install.packages("outliers")
+#install.packages("tidyverse")
+library("outliers")
+library("tidyverse")
+```
+
+```{r}
+outlier(
+  x = cottonLima$yield,
+  logical = TRUE
+) %>% as_tibble %>% 
+  bind_cols(cottonLima)
+```
+
+##---------------------------------------------------------------------##
+##----------------------------- EXEMPLOS ------------------------------##
+##---------------------------------------------------------------------##
+
+#Batata doce - DIC
+
+```{r}
+head(sweetpotato)
+```
+
+```{r}
+str(sweetpotato)
+```
+
+```{r}
+summary(sweetpotato)
+```
+
+#Aplicando Análise de Variância nos dados
+
+#$$ abre o LaTex
+$$
+y_{ij} = \mu + t_i + e_{ij}
+$$
+
+#função AOV
+```{r}
+analise<-aov(yield ~ virus, data=sweetpotato)
+summary(analise)
+```
+
+#ou função lm
+```{r}
+analise2<-lm(yield ~ virus, data=sweetpotato)
+anova(analise2)
+```
+
+#Dados - DBC
+```{r}
+dados
+```
+
+$$
+y_{ij} = \mu + t_i + b_j + e_{ij}
+$$
+
+
+#O que está errado???
+```{r}
+analise3<-aov(resp ~ trat + block, data=dados)
+summary(analise3)
+```
+
+```{r}
+str(dados)
+```
+
+```{r}
+dados<-transform(dados, trat=factor(trat), block=factor(block))
+str(dados)
+```
+
+```{r}
+analise4<-aov(resp ~ trat + block, data=dados)
+summary(analise4)
+```
+
+```{r}
+analise5<-lm(resp ~ trat + block, data=dados)
+anova(analise5)
+```
+
+#Utilizando pacotes
+```{r}
+library("ExpDes.pt")
+```
+
+```{r}
+?ExpDes.pt
+```
+
+#Sweetpotato
+```{r}
+dic(trat=sweetpotato$virus, resp=sweetpotato$yield, quali = TRUE, mcomp = "tukey", nl = FALSE,
+    hvar='bartlett', sigT = 0.05, sigF = 0.05)
+```
+
+#Simplificando
+```{r}
+attach(sweetpotato)
+dic(trat=virus, resp=yield, quali = TRUE, mcomp = "tukey", nl = FALSE,
+    hvar='bartlett', sigT = 0.05, sigF = 0.05)
+detach(sweetpotato)
+```
+
+#Dados DBC
+```{r}
+attach(dados)
+dbc(trat=trat, bloco=block, resp=resp, quali=TRUE, mcomp = "tukey")
+detach(dados)
+```
+
+## Dia 2
+##------------------- PLANEJAMENTO EXPERIMENTAL -------------------##
+
+#1) Repetição
+#2) Casualização
+#3) Controle local
+
+```{r}
+library("agricolae")
+```
+
+```{r}
+?design.X
+# X deve ser substituido por:
+# crd para Inteiramente casualizado
+# rcbd para Blocos Completos casualizado
+# ab para Esquema fatorial
+# alpha para Alpha Latice
+# bib para Blocos Incompletos
+# split para Parcela Subdividida
+# dau para Blocos Aumentados
+# lsd para Quadrado Latino
+# lattice para Latice
+# graeco para Quadrado Greco-Latino
+# strip para experimentos em faixas
+```
+          
+#Ctrl + shift + H -> Definir diretório    
+
+#DIC, X Tratamentos, X Repetições
+
+```{r}
+trt<-(1:X) #Número de tratamentos
+r<-X #Número de repetições
+```
+
+#Sorteio
+```{r}
+sorteioDIC<-design.crd(trt, r, serie = 3, seed = 0, kinds = "Super-Duper",randomization=TRUE)
+```
+
+#Escrevendo a planilha de sorteio
+```{r}
+write.table(sorteioDIC$book, file='SorteioDIC.csv', 
+            row.names=FALSE, col.names=c("Parcela", "Rep", "Trat"), sep =" ")   
+```
+
+       
+#DBC, X Tratamentos, X Repetições          
+```{r}
+trt<-(1:X)
+r<-X
+```
+
+```{r}
+sorteioDBCC<-design.rcbd(trt, r, serie = 3, seed = 0, kinds = "Super-Duper",randomization=TRUE)
+```
+
+```{r}
+write.table(sorteioDBCC$book, file='SorteioDBCC.csv', 
+            row.names=FALSE, col.names=c("Parcela", "Bloco", "Trat"), sep =" ")
+```
+
+
+#FATORIAL A por B
+```{r}
+trt<-c(A,B)#Mais fatores -> separar por virgulas. Basta substituir A e B pelo nivel dos fatores, exemplo 5 x 4.
+r<-X
+```
+
+#Fatorial DIC
+```{r}
+sorteioFATDIC<-design.ab(trt, r, serie = 3, design=c("crd"),seed = 0, kinds = "Super-Duper",first=TRUE,randomization=TRUE)
+write.table(sorteioFATDIC$book, file='SorteioFATDIC.csv', 
+            row.names=FALSE, col.names=c("Parcela", "Rep", "Fator A", "Fator B"), sep =" ")
+```
+ 
+#Fatorial DBC      
+```{r}
+sorteioFATDBCC<-design.ab(trt, r, serie = 3, design=c("rcbd"),seed = 0, kinds = "Super-Duper",first=TRUE,randomization=TRUE)
+write.table(sorteioFATDBCC$book, file='SorteioFATDBCC.csv', 
+            row.names=FALSE, col.names=c("Parcela", "Bloco", "Fator A", "Fator B"), sep =" ")
+```
+
+
+#PARCELA SUBDIVIDIDA
+```{r}
+trt1<-(1:3)
+trt2<-(1:12)
+r<-3
+```
+
+#Psub DIC
+```{r}
+sorteioSPLITDIC<-design.split(trt1, trt2,r, design=c("crd"),serie = 3, seed = 0, kinds = "Super-Duper", first=TRUE,randomization=TRUE)
+```
+
+```{r}
+write.table(sorteioSPLITDIC$book, file='SorteioSPLITDIC.csv', 
+            row.names=FALSE, col.names=c("Parcela", "Subparcela", "Rep", "Fator A", "Fator B"), sep =" ")
+```
+
+#Psub DBC
+```{r}
+sorteioSPLITDBCC<-design.split(trt1, trt2,r, design=c("rcbd"),serie = 3, seed = 0, kinds = "Super-Duper", first=TRUE,randomization=TRUE)
+```
+
+```{r}
+write.table(sorteioSPLITDBCC$book, file='SorteioSPLITDBCC.csv', 
+            row.names=FALSE, col.names=c("Parcela", "Subparcela", "Bloco", "Fator A", "Fator B"), sep =" ")
+```
+
+
+##------------------- PRESSUPOSTOS DA ANOVA -------------------##
+
+
+# 1) Normalidade dos erros (Os erros devem seguir distribuição Normal)
+# 2) Homocedasticidade dos erros (Os erros devem ser homogeneos)
+# 3) Independência dos erros (Os erros devem ser independentes)
+# 4) Aditividade do modelo (O modelo deve conter apenas efeitos aditivos)
+
+
+#CARREGANDO PACOTES E IMPORTANDO OS CONJUNTOS DE DADOS
+```{r}
+library("agricolae")
+library("laercio")
+library("ggplot2")
+data(sweetpotato) #agricolae
+data(cotton) #agricolae
+dados<-(ldata) #laercio
+```
+
+
+#DIC
+$$
+y_{ij} = \mu + t_i + e_{ij}
+$$
+
+#Sweetpotato
+
+```{r}
+AOVsweetpotato<-aov(yield ~ virus, data=sweetpotato)
+AOVsweetpotato$residuals #Extraindo os residuos/erros
+```
+
+#Verificando a NORMALIDADE - Shapiro-Wilk
+```{r}
+shapiro.test(AOVsweetpotato$residuals)
+```
+
+#Verificando a NORMALIDADE - Gráfico QQplot
+```{r}
+#install.packages("fBasics")
+library(fBasics)
+qqnormPlot(AOVsweetpotato$residuals)
+```
+
+#Verificando a HOMOCEDASTICIDADE - Barlett
+```{r}
+bartlett.test(AOVsweetpotato$residuals~virus,data=sweetpotato) 
+```
+
+#Verificando a INDEPENDÊNCIA - Durbin-Watson Test
+```{r}
+#install.packages("car")
+library("car")
+dwt(lm(yield ~ virus, data=sweetpotato))
+```
+
+#Verificando a ADITIVIDADE -> Somente 1 fator principal (DIC) não precisa testar
+
+
+
+#DBC
+$$
+y_{ij} = \mu + t_i + b_j + e_{ij}
+$$
+
+# Conjunto "Dados"
+```{r}
+dados<-(ldata) #laercio
+str(dados)
+dados<-transform(dados, trat=factor(trat), block=factor(block))
+str(dados)
+```
+
+#Extraindo os residuos
+```{r}
+AOVdados<-aov(resp ~ trat + block, data=dados)
+AOVdados$residuals #Extraindo os residuos/erros
+```
+
+#NORMALIDADE - Shapiro-Wilk
+```{r}
+shapiro.test(AOVdados$residuals)
+qqnormPlot(AOVdados$residuals)
+```
+
+#HOMOCEDASTICIDADE - Bartlett
+```{r}
+bartlett.test(AOVdados$residuals~trat,data=dados) 
+```
+
+#HOMOCEDASTICIDADE - ONeill & Mathews
+```{r}
+library("ExpDes.pt")
+oneilldbc(dados$resp, dados$trat, dados$block)
+```
+
+#INDEPENDÊNCIA - Durbin-Watson Test
+```{r}
+dwt(lm(resp ~ trat + block, data=dados))
+```
+
+#ADITIVIDADE - Tukey add Test
+```{r}
+#install.packages("asbio")
+library(asbio)
+tukey.add.test(dados$resp, dados$trat, dados$block)
+```
+
+
+##------------------- TRANSFORMÇÃO DE DADOS -------------------##
+
+```{r}
+dados2<-read.table("https://raw.githubusercontent.com/VSSEric/Introduction-to-R-UFLA-2019/master/Exemplos/exemplo2.txt", h=T)
+str(dados2)
+```
+
+#Trabalhando como DIC
+```{r}
+AOVdados2<-aov(VarResp ~ Trat, data=dados2)
+```
+
+```{r}
+shapiro.test(AOVdados2$residuals)
+```
+
+```{r}
+bartlett.test(residuals(AOVdados2)~dados2$Trat)
+```
+
+```{r}
+car::dwt(lm(VarResp ~ Trat, data=dados2))
+```
+
+##------------------- Testando Transformações Comuns -------------------##
+
+#Raiz Quadrada
+```{r}
+dados2$RQUAD<-dados2$VarResp^(1/2)
+```
+
+#Raiz Cubica
+```{r}
+dados2$RCUB<-dados2$VarResp^(1/3)
+```
+
+#Log
+```{r}
+dados2$LOG<-log(dados2$VarResp)
+```
+
+#Potência
+```{r}
+dados2$POT2<-dados2$VarResp^2
+```
+
+#Conferindo a Planilha
+```{r}
+head(dados2)
+```
+
+#Extraindo os residuos
+```{r}
+AOVRQUAD<-aov(RQUAD ~ Trat, data=dados2)
+AOVRCUB<-aov(RCUB ~ Trat, data=dados2)
+AOVLOG<-aov(LOG ~ Trat, data=dados2)
+AOVPOT2<-aov(POT2 ~ Trat, data=dados2)
+```
+
+
+# VERIFICANDO OS PRESSUPOSTOS
+
+#Raiz Quadrada
+```{r}
+shapiro.test(AOVRQUAD$residuals)
+bartlett.test(residuals(AOVRQUAD)~dados2$Trat)
+car::dwt(lm(RQUAD ~ Trat, data=dados2))
+```
+
+#Raiz Cubica
+```{r}
+shapiro.test(AOVRCUB$residuals)
+bartlett.test(residuals(AOVRCUB)~dados2$Trat)
+car::dwt(lm(RCUB ~ Trat, data=dados2))
+```
+
+#LOG
+```{r}
+shapiro.test(AOVLOG$residuals)
+bartlett.test(residuals(AOVLOG)~dados2$Trat)
+car::dwt(lm(LOG ~ Trat, data=dados2))
+```
+
+#Potência
+```{r}
+shapiro.test(AOVPOT2$residuals)
+bartlett.test(residuals(AOVPOT2)~dados2$Trat)
+car::dwt(lm(POT2 ~ Trat, data=dados2))
+```
+
+#ANOVA
+```{r}
+AOVRQUAD<-aov(RQUAD ~ Trat, data=dados2)
+anova(AOVRQUAD)
+print(agricolae::HSD.test(AOVRQUAD, "Trat", group = TRUE)$groups)
+```
+
+```{r}
+dic(trat=dados2$Trat, resp=dados2$RQUAD, quali = TRUE, mcomp = "tukey", nl = FALSE,
+    hvar='bartlett', sigT = 0.05, sigF = 0.05)
+```
+
+          
+          
+#EXEMPLO DBC          
+
+```{r}
+dados3<-read.table("https://raw.githubusercontent.com/VSSEric/Introduction-to-R-UFLA-2019/master/Exemplos/exemplo2.txt", h=T)
+```
+
+```{r}
+head(dados3)
+```
+
+```{r}
+str(dados3)
+dados3<-transform(dados3, Rep=factor(Rep))
+str(dados3)
+```
+
+#Extraindo Residuos
+```{r}
+AOVdados3<-aov(VarResp ~ Trat + Rep, data=dados3)
+```
+
+```{r}
+shapiro.test(AOVdados3$residuals)
+```
+
+```{r}
+bartlett.test(residuals(AOVdados3)~dados3$Trat)
+ExpDes.pt::oneilldbc(dados3$VarResp, dados3$Trat, dados3$Rep)
+```
+
+```{r}
+car::dwt(lm(VarResp ~ Trat + Rep, data=dados3))
+```
+
+```{r}
+asbio::tukey.add.test(dados3$VarResp, dados3$Trat, dados3$Rep)
+```
+
+##------------------------- VERIFICANDO VIA BOXCOX ---------------------##
+
+```{r}
+#install.packages("MASS")
+library("MASS")
+```
+
+```{r}
+bc<-boxcox(AOVdados3)
+bc
+```
+
+```{r}
+lambda <- bc$x[which(bc$y==max(bc$y))]
+lambda
+```
+
+#Realizando a transformação indicada
+```{r}
+dados3$VRT<-dados3$VarResp^lambda
+head(dados3)
+```
+
+#Extraindo residuos
+```{r}
+AOVtr<- aov(VRT ~ Trat + Rep, data=dados3)
+```
+
+```{r}
+shapiro.test(residuals(AOVtr))
+bartlett.test(residuals(AOVtr)~dados3$Trat)
+car::dwt(lm(AOVtr)) 
+asbio::tukey.add.test(dados3$VRT,  dados3$Rep, dados3$Trat)
+```
+
+#ANOVA
+```{r}
+anova(AOVtr)
+print(agricolae::HSD.test(AOVtr, "Trat", group = TRUE)$groups)
+```
+
+```{r}
+dbc(trat=dados3$Trat, bloco=dados3$Rep, resp=dados3$VRT, quali = TRUE, mcomp = "tukey")
+```
+## Dia 3
+---
+EXEMPLOS DE ANÁLISES COMPLETAS"
+output: html_notebook
+---
+
+#EXEMPLO DIC QUALITATIVO
+
+```{r}
+dadosdic<-read.table("https://raw.githubusercontent.com/VSSEric/Introduction-to-R-UFLA-2019/master/Exemplos/dic.txt", h=T)
+```
+
+```{r}
+head(dadosdic)
+str(dadosdic)
+dadosdic<-transform(dadosdic, Trat=factor(Trat))
+```
+
+```{r}
+boxplot(dadosdic$Prod)
+```
+
+```{r}
+library("outliers")
+library("tidyverse")
+outlier(
+  x = dadosdic$Prod,
+  logical = TRUE
+) %>% as_tibble %>% 
+  bind_cols(dadosdic)
+```
+
+$$
+y_{ij} = \mu + t_i + e_{ij}
+$$
+
+```{r}
+modelo<-lm(Prod ~ Trat, data=dadosdic)
+```
+
+```{r}
+shapiro.test(modelo$residuals)
+bartlett.test(residuals(modelo)~dadosdic$Trat)
+car::dwt(lm(Prod ~ Trat, data=dadosdic))
+```
+
+```{r}
+anova(modelo)
+agricolae::cv.model(modelo)
+```
+
+```{r}
+print(agricolae::HSD.test(modelo, "Trat", group = TRUE)$groups)
+plot(agricolae::HSD.test(modelo, "Trat", group = TRUE))
+```
+
+```{r}
+library("ggplot2")
+ggplot(dadosdic, aes(x = Trat, y = Prod, color=Trat)) +
+  geom_boxplot() +
+  scale_colour_manual(position=("left"), values=c("blue", "blue", "blue",
+                                                  "blue", "green", "red", 
+                                                  "blue", "red", "blue",
+                                                  "red")) +
+  scale_y_continuous(limits=c(200, 600)) +
+  guides(color = FALSE) +
+  labs(x="Genótipos", y="Produção")
+```
+
+#Escrevendo arquivo .TXT com os resultados
+```{r}
+sink("Resultados das Análises - DIC.txt",type = c("output"))
+cat("#---- ANÁLISE DE VARIÂNCIA ----#", "\n")
+print(anova(modelo))
+cat("#--- CV% ---#", "\n")
+print(cv.model(modelo))
+cat("#--- Teste de tukey ---#", "\n")
+print(HSD.test(modelo, "Trat", group = TRUE)$groups)
+sink()
+```
+
+
+#EXEMPLO DBC QUANTITATIVO
+
+```{r}
+brix<-read.table("https://raw.githubusercontent.com/VSSEric/Introduction-to-R-UFLA-2019/master/Exemplos/dbc2.txt", h=T)
+str(brix)
+brix<-transform(brix, Bloco=factor(Bloco))
+str(brix)
+```
+
+```{r}
+boxplot(brix)
+```
+
+```{r}
+outlier(
+  x = brix$Brix,
+  logical = TRUE
+) %>% as_tibble %>% 
+  bind_cols(brix)
+```
+
+```{r}
+require(lattice)
+xyplot(Brix~Epoca, data=brix, jitter.x=T, type=c("p","a"))
+```
+
+
+$$
+y_{ij} = \mu + b_j + t_i + e_{ij}
+$$
+
+```{r}
+mbrix<-lm(Brix ~ Bloco + ordered(Epoca), data=brix)
+```
+
+```{r}
+shapiro.test(mbrix$residuals)
+bartlett.test(residuals(mbrix)~brix$Epoca)
+car::dwt(lm(Brix ~ Bloco + ordered(Epoca), data=brix))
+asbio::tukey.add.test(brix$Brix, brix$Bloco, ordered(brix$Epoca))
+```
+
+```{r}
+anova(mbrix)
+agricolae::cv.model(mbrix)
+```
+
+```{r}
+summary(mbrix)
+```
+
+```{r}
+m1brix<-lm(Brix ~ Bloco + Epoca, data=brix)
+m2brix<-lm(Brix ~ Bloco + Epoca + I(Epoca^2), data=brix)
+m3brix<-lm(Brix ~ Bloco + Epoca + I(Epoca^2) + I(Epoca^3), data=brix)
+m4brix<-lm(Brix ~ Bloco + Epoca + I(Epoca^2) + I(Epoca^3) + I(Epoca^4), data=brix)
+m5brix<-lm(Brix ~ Bloco + Epoca + I(Epoca^2) + I(Epoca^3) +I(Epoca^4) +I(Epoca^5), data=brix)
+```
+
+```{r}
+anova(m1brix)
+anova(m2brix)
+anova(m3brix)
+anova(m4brix)
+anova(m5brix)
+```
+
+
+```{r}
+anova(m1brix, m2brix, m3brix, m4brix, m5brix)
+```
+
+```{r}
+summary(m2brix)
+```
+
+```{r}
+Majus<-predict(m2brix)
+ajust<-as.data.frame(Majus)
+ajust$Epoca<-brix$Epoca
+ajust
+```
+
+```{r}
+m1<-lm(Majus ~ Epoca + I(Epoca^2), data=ajust)
+```
+
+```{r}
+anova(m1)
+```
+
+```{r}
+summary(m1)
+```
+
+```{r}
+coeficientes<-coef(m1)
+coeficientes
+```
+
+```{r}
+library("ggplot2")
+library("ggpmisc")
+ggplot(ajust, aes(x=Epoca, y=Majus)) +
+  stat_smooth(data=ajust, aes(y = Majus, x=Epoca),method = "lm", formula = y ~ x + I(x^2), size = 1)+
+  stat_poly_eq(aes(label =  paste(..eq.label.., ..rr.label.., sep = "~~~~")),formula = y ~ x + I(x^2), parse = TRUE) +
+  geom_point(size=1.5, pch=21, fill='darkred',
+             colour='grey30', alpha=0.7) +
+  scale_x_continuous(limits=c(0,35), breaks=seq(0,35,1)) +
+  scale_y_continuous(limits=c(10,25), breaks=seq(10, 25, 1)) +
+  xlab('Época (Dias)') +
+  ylab(expression(paste('Brix (' , degree, 'Bx)'))) +
+  theme_bw()
+```
+
+#Escrevendo arquivo .TXT com os resultados
+```{r}
+sink("Resultados das Análises - DBC QUANTITATIVO.txt",type = c("output"))
+cat("#---- TABELA DE ANÁLISE DE VARIÂNCIA ----#", "\n")
+print(anova(mbrix))
+cat("#--- CV% ---#", "\n")
+print(cv.model(mbrix))
+cat("#---- TABELA DE ANÁLISE DE VARIÂNCIA COMPLETO ----#", "\n")
+print(anova(m5brix))
+cat("#---- ANÁLISE DO MODELO INDICADO ----#", "\n")
+print(anova(m1brix, m2brix, m3brix, m4brix, m5brix))
+cat("#---- ANOVA DO MODELO INDICADO ----#", "\n")
+print(anova(m2brix))
+cat("#---- TABELA DE ANÁLISE DE VARIÂNCIA DO MODELO AJUSTADO ----#", "\n")
+print(anova(m1))
+cat("#--- Coeficientes do modelo quadratico ajustado ---#", "\n")
+print(coef(m1))
+cat("#--- R2 ---#", "\n")
+print(summary(m1)$r.squared)
+sink()
+```
+
+#Excel com as médias ajustadas
+```{r}
+write.table(ajust, file='Médias Ajustadas (Brix).csv', 
+            row.names=FALSE, col.names=c("Média(Brix)", "Época"), sep =" ")  
+```
+
+
+#Utilizando pacote ExpDes.pt
+```{r}
+library(ExpDes.pt)
+AnovaDBC<-dbc(trat=brix$Epoca, bloco=brix$Bloco, resp=brix$Brix, quali = FALSE)
+graficos(AnovaDBC, grau = 2, mod = TRUE, main = " ", sub = " ",
+         xlab = "Época", ylab = "Brix", pch = 19,
+         xlim = NULL, ylim = NULL, bty = "o")
+```
+
+
+#EXEMPLO DBC QUALITATIVO
+
+```{r}
+#Pacote com conjunto de dados
+install.packages("agridat")
+```
+
+```{r}
+library("agridat")
+DADOS<-(dasilva.maize)
+```
+
+#Trabalhando com o ambiente 1
+```{r}
+DADOSEXP1<-subset(DADOS, DADOS$env=="E1")
+head(DADOSEXP1)
+tail(DADOSEXP1)
+```
+
+```{r}
+boxplot(DADOSEXP1$yield)
+```
+
+```{r}
+outlier(
+  x = DADOSEXP1$yield,
+  logical = TRUE
+) %>% as_tibble %>% 
+  bind_cols(DADOSEXP1)
+```
+
+```{r}
+require(lattice)
+xyplot(yield~gen, data=DADOSEXP1, jitter.x=T, type=c("p","a"))
+```
+
+```{r}
+analise1<-aov(yield ~ rep + gen, data=DADOSEXP1)
+```
+
+```{r}
+shapiro.test(analise1$residuals)
+bartlett.test(residuals(analise1)~DADOSEXP1$gen)
+car::dwt(lm(yield ~ rep + gen, data=DADOSEXP1))
+asbio::tukey.add.test(DADOSEXP1$yield, DADOSEXP1$rep, DADOSEXP1$gen)
+```
+
+```{r}
+anova(analise1)
+agricolae::cv.model(analise1)
+```
+
+```{r}
+print(agricolae::HSD.test(analise1, "gen", group = TRUE)$groups)
+plot(agricolae::HSD.test(analise1, "gen", group = TRUE))
+```
+
+```{r}
+library("ScottKnott")
+agrupamento<-SK(analise1, which="gen")
+summary(agrupamento)
+plot(agrupamento, title='Agrupamento dos Genótipos de Milho - Ambiente 1')
+```
+
+
+```{r}
+library("ggplot2")
+ggplot(DADOSEXP1, aes(x = gen, y = yield, fill=gen)) +
+  geom_boxplot() +
+  scale_y_continuous(limits=c(1, 10)) +
+  guides(fill = FALSE) +
+  labs(title = "Produtividade média de genótipos de milho - Ambiente 1",
+       y = expression(Produtividade*" "(Kg*" "*ha^-1)), x = "Genótipos",
+       caption = "Fonte: Curso Gen 2020")
+```
+
+#Criando um dataframe com o resultado do SK
+```{r}
+rank<-data.frame(summary(agrupamento))
+colnames(rank)<-c("Genotipos", "Media", "Letra")
+rank
+```
+
+#Paleta de grupo -> 3 grupos
+```{r}
+cores <- c(rgb(143,199,74,maxColorValue = 255),
+           rgb(242,104,34,maxColorValue = 255), 
+           rgb(111,145,202,maxColorValue = 255))
+```
+
+#Plotando o gráfico
+```{r}
+ggplot(rank, aes(x = Genotipos, y = Media)) +
+  geom_col(fill=cores[as.numeric(rank$Letra)]) +
+  ylim(0,10)+
+    guides(fill = FALSE)+
+  geom_text(aes(label = rank$Letra), vjust = -0.5, colour=cores[as.numeric(rank$Letra)])+
+  labs(title = "Produtividade média de genótipos de milho - Ambiente 1",
+       y = expression(Produtividade*" "(Kg*" "*ha^-1)), x = "Genótipos",
+       caption = "Fonte: Curso Gen 2020")
+```
+
+
+#Trabalhando com o ambiente 2
+```{r}
+DADOSEXP2<-subset(DADOS, DADOS$env=="E2")
+```
+
+```{r}
+outlier(
+  x = DADOSEXP2$yield,
+  logical = TRUE
+) %>% as_tibble %>% 
+  bind_cols(DADOSEXP2)
+```
+
+```{r}
+require(lattice)
+xyplot(yield~gen, data=DADOSEXP2, jitter.x=T, type=c("p","a"))
+```
+
+```{r}
+analise2<-aov(yield ~ rep + gen, data=DADOSEXP2)
+```
+
+```{r}
+shapiro.test(analise2$residuals)
+bartlett.test(residuals(analise2)~DADOSEXP2$gen)
+car::dwt(lm(yield ~ rep + gen, data=DADOSEXP2))
+asbio::tukey.add.test(DADOSEXP2$yield, DADOSEXP2$rep, DADOSEXP2$gen)
+```
+
+```{r}
+anova(analise2)
+agricolae::cv.model(analise2)
+```
+
+```{r}
+print(agricolae::HSD.test(analise2, "gen", group = TRUE)$groups)
+plot(agricolae::HSD.test(analise2, "gen", group = TRUE))
+```
+
+```{r}
+library("ScottKnott")
+agrupamento2<-SK(analise2, which="gen")
+summary(agrupamento2)
+plot(agrupamento2, title='Agrupamento dos Genótipos de Milho - Ambiente 2')
+```
+
+```{r}
+library("ggplot2")
+ggplot(DADOSEXP2, aes(x = gen, y = yield, fill=gen)) +
+  geom_boxplot() +
+  scale_y_continuous(limits=c(1, 10)) +
+  guides(fill = FALSE) +
+  labs(title = "Produtividade média de genótipos de milho - Ambiente 2",
+       y = expression(Produtividade*" "(Kg*" "*ha^-1)), x = "Genótipos",
+       caption = "Fonte: Curso Gen 2020")
+```
+
+
+```{r}
+rank2<-data.frame(summary(agrupamento2))
+colnames(rank2)<-c("Genotipos", "Media", "Letra")
+```
+
+
+```{r}
+ggplot(rank2, aes(x = Genotipos, y = Media)) +
+  geom_col(fill=cores[as.numeric(rank2$Letra)]) +
+  ylim(0,10)+
+    guides(fill = FALSE)+
+  geom_text(aes(label = rank2$Letra), vjust = -0.5, colour=cores[as.numeric(rank2$Letra)])+
+  labs(title = "Produtividade média de genótipos de milho - Ambiente 2",
+       y = expression(Produtividade*" "(Kg*" "*ha^-1)), x = "Genótipos",
+       caption = "Fonte: Curso Gen 2020")
+```
+
+#Análise via ExpDes.pt
+```{r}
+DBCAMB1<-dbc(DADOSEXP1$gen, DADOSEXP1$rep, DADOSEXP1$yield, quali = TRUE, mcomp = "sk")
+```
+
+```{r}
+DBCAMB2<-dbc(DADOSEXP2$gen, DADOSEXP2$rep, DADOSEXP2$yield, quali = TRUE, mcomp = "sk")
+```
+
+
+#ANÁLISE CONSIDERANDO TODOS OS NOVE AMBIENTES
+$$
+y_{ijk} = \mu + b_{j(k)} + a_k + t_i + ta_{ik} + e_{ijk}
+$$
+
+```{r}
+DADOS
+str(DADOS)
+```
+
+```{r}
+boxplot(DADOS$yield)
+```
+
+
+```{r}
+conjunta<-aov(yield ~ rep%in%env + gen*env, data=DADOS)
+```
+
+```{r}
+anova(conjunta)
+agricolae::cv.model(conjunta)
+```
+
+```{r}
+car::Anova(lm(yield ~ env:rep + env + gen + gen*env, data=DADOS)) #add type=3
+```
+
+#Interaction Plots
+```{r}
+with(DADOS, interaction.plot(gen, env, yield, ylab = "médias",
+   xlab = "Genótiposs"))
+with(DADOS, interaction.plot(env, gen, yield, ylab = "médias",
+   xlab = "Ambientes"))
+```
+
+
+```{r}
+library(emmeans)
+mg<-emmeans(conjunta, ~ gen, data=DADOS)
+me<-emmeans(conjunta, ~ env, data=DADOS)
+mge<-emmeans(conjunta, ~ gen*env, data=DADOS)
+```
+
+#Resumindo o conjunto de dados
+```{r}
+m<-data.frame(mge)
+m[,4:7]<-NULL
+n<-data.frame(mg)
+n[,3:6]<-NULL
+q<-data.frame(me)
+q[,3:6]<-NULL
+head(n)
+head(q)
+head(m)
+```
+
+#Ranking dos Genótipos
+```{r}
+ggplot(n, aes(x = gen, y = emmean)) +
+  geom_col(aes(fill=-(emmean))) +
+  ylim(0,10)+
+  guides(fill = FALSE)+
+  labs(title = "Produtividade média geral dos genótipos de milho",
+       y = expression(Produtividade*" "(Kg*" "*ha^-1)), x = "Genótipos",
+       caption = "Fonte: Curso Gen 2020")
+```
+
+#Ranking dos Ambientes
+```{r}
+ggplot(q, aes(x = env, y = emmean)) +
+  geom_col(aes(fill=-(emmean))) +
+  ylim(0,15)+
+  guides(fill = FALSE)+
+  labs(title = "Produtividade média geral dos genótipos de milho por ambiente",
+       y = expression(Produtividade*" "(Kg*" "*ha^-1)), x = "Ambiente",
+       caption = "Fonte: Curso Gen 2020")
+```
+
+
+#Gráfico da interação
+```{r}
+library(reshape2)
+m = melt(m, value.name="emmean")
+ggplot(data=m, aes(x=env, y=emmean, group = gen, colour = gen)) +
+  geom_line() +
+  labs(title = "Produtividade média dos genótipos de milho",
+       y = expression(Produtividade*" "(Kg*" "*ha^-1)), x = "Ambientes", 
+       colour = "Genótipos",
+       caption = "Fonte: Curso Gen 2020")
+```
+
+
+
+#Pacote Multi-Environment Traisl Analysis (metan) - Tiago Olivoto (2020)
+```{r}
+library(metan)
+```
+
+```{r}
+mod<-anova_joint(DADOS, env, gen, rep, yield)
+```
+
+#médias ajustadas
+```{r}
+mediasge<-ge_means(DADOS, env, gen, resp = yield)
+```
+
+#Ranqueamento
+```{r}
+ge_winners(DADOS, env, gen, resp=yield, type = "ranks")
+ge_winners(DADOS, env, gen, resp=yield, type = "winners")
+```
+
+```{r}
+ge_plot(DADOS, env, gen, yield, type = 2)
+```
+
+
+#Sugestões de literatura
+
+#-> Manual de Planejamento e Análise de Experimentos com R - Walmes 
+#   Marques Zeviani, UFPR http://leg.ufpr.br/~walmes/mpaer/
+
+
+#-> ggPlot2
+
+https://rstudio.com/wp-content/uploads/2016/03/ggplot2-cheatsheet-portuguese.pdf
+http://recologia.com.br/tag/graficos/
+https://rpubs.com/mnunes/ggplot2
